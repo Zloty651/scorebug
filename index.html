@@ -212,6 +212,36 @@
             el.addEventListener('keypress', e => { if (!/[0-9:]/.test(e.key)) e.preventDefault(); });
             el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); el.blur(); }});
         });
+        // LOGIKA KARTEK (2 żółte = czerwona i żółte znikają)
+function toggleCard(el, type) {
+    const row = el.parentElement;
+    const allYellows = row.querySelectorAll('.card.y');
+    const redCard = row.querySelector('.card.r');
+
+    if (type === 'y') {
+        el.classList.toggle('active');
+        const activeYellows = row.querySelectorAll('.card.y.active').length;
+        
+        if (activeYellows >= 2) {
+            redCard.classList.add('active');
+            allYellows.forEach(y => {
+                y.classList.remove('active');
+                y.style.visibility = 'hidden';
+            });
+        }
+    }
+    
+    if (type === 'r') {
+        el.classList.toggle('active');
+        if (!el.classList.contains('active')) {
+            allYellows.forEach(y => {
+                y.style.visibility = 'visible';
+                y.classList.remove('active');
+            });
+        }
+    }
+}
+
     </script>
 </body>
 </html>
