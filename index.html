@@ -16,15 +16,17 @@
         .logo-title { font-weight: 900; font-size: 24px; color: #000f45; text-transform: uppercase; }
         .logo-sub { font-size: 13px; color: #0044cc; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
 
-        /* SCOREBUG Z PASKIEM POSTĘPU */
-        .bug-container { position: relative; display: flex; align-items: center; background: #000f45; color: white; width: fit-content; padding: 5px; border-bottom: 8px solid #0044cc; box-shadow: 0 10px 30px var(--shadow); font-size: 45px; border-radius: 4px; overflow: hidden; }
-        .box { padding: 20px 35px; text-align: center; min-width: 90px; outline: none; white-space: nowrap; overflow: hidden; z-index: 2; }
+        /* SCOREBUG Z PASKIEM NA DOLE */
+        .bug-wrapper { position: relative; width: fit-content; background: #000f45; padding: 5px; border-bottom: 8px solid #0044cc; box-shadow: 0 10px 30px var(--shadow); border-radius: 4px; overflow: hidden; }
+        #scorebug { display: flex; align-items: center; color: white; font-size: 45px; }
+        
+        /* PASEK POSTĘPU - TERAZ NA CAŁEJ SZEROKOŚCI NA DOLE */
+        #matchProgress { position: absolute; bottom: 0; left: 0; height: 6px; background: #00ccff; width: 0%; transition: width 1s linear; z-index: 10; box-shadow: 0 0 12px #00ccff; }
+
+        .box { padding: 20px 35px; text-align: center; min-width: 90px; outline: none; white-space: nowrap; overflow: hidden; }
         .team { background: #001e8c; font-weight: bold; border-right: 2px solid #002db3; text-transform: uppercase; }
         .score { background: #ffffff; color: #000; font-weight: 900; min-width: 50px; border-left: 1px solid #ccc; height: 65px; display: flex; align-items: center; justify-content: center; }
-        .time-box { background: #000a30; font-size: 40px; color: #fff; min-width: 130px; border-left: 2px solid #001e8c; position: relative; }
-        
-        /* WIZUALNY PASEK POSTĘPU (Progress Bar) */
-        #matchProgress { position: absolute; bottom: 0; left: 0; height: 4px; background: #00ccff; width: 0%; transition: width 1s linear; z-index: 3; box-shadow: 0 0 10px #00ccff; }
+        .time { background: #000a30; font-size: 40px; color: #fff; min-width: 130px; border-left: 2px solid #001e8c; }
 
         .main-panel { background: var(--card); padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px var(--shadow); margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         .btn { padding: 12px 25px; cursor: pointer; border: none; border-radius: 8px; font-weight: bold; transition: 0.2s; font-size: 16px; }
@@ -58,15 +60,17 @@
         </div>
     </div>
 
-    <div class="bug-container">
-        <div class="box team" contenteditable="true" spellcheck="false" id="t1n">SWE</div>
-        <div class="box score" contenteditable="true" spellcheck="false" id="s1">0</div>
-        <div class="box score" contenteditable="true" spellcheck="false" id="s2">0</div>
-        <div class="box team" contenteditable="true" spellcheck="false" id="t2n">POL</div>
-        <div class="box time-box" id="timerDisplay">00:00
-            <!-- TO JEST TWÓJ NOWY PASEK -->
-            <div id="matchProgress"></div>
+    <!-- NOWY KONTENER Z PASKIEM -->
+    <div class="bug-wrapper">
+        <div id="scorebug">
+            <div class="box team" contenteditable="true" spellcheck="false" id="t1n">SWE</div>
+            <div class="box score" contenteditable="true" spellcheck="false" id="s1">0</div>
+            <div class="box score" contenteditable="true" spellcheck="false" id="s2">0</div>
+            <div class="box team" contenteditable="true" spellcheck="false" id="t2n">POL</div>
+            <div class="box time" id="timerDisplay">00:00</div>
         </div>
+        <!-- PASEK POSTĘPU -->
+        <div id="matchProgress"></div>
     </div>
 
     <div class="main-panel">
@@ -107,7 +111,7 @@
             fr: { start: "ARRÊTER", goal: "+1 BUT", reset: "RESET", corners: "Corners", add: "AJOUTER", stats: "Stats", ph: "Nom..." },
             ru: { start: "СТАРТ / СТОП", goal: "+1 ГОЛ", reset: "СБРОС", corners: "Угловые", add: "ДОБАВИТЬ", stats: "Стат", ph: "Фамилия..." },
             zh: { start: "开始/停止", goal: "+1 进球", reset: "重置", corners: "角球", add: "添加", stats: "统计", ph: "姓名..." },
-            ja: { start: "スタート/停止", goal: "+1 ゴール", reset: "リセット", corners: "コーナー", add: "追加", stats: "統計", ph: "名前..." }
+            ja: { start: "スタート/停止", goal: "+1 ゴール", reset: "リreset", corners: "コーナー", add: "追加", stats: "統計", ph: "名前..." }
         };
 
         function updateUI() {
@@ -197,10 +201,6 @@
 
         document.getElementById('t1n').addEventListener('input', updateUI);
         document.getElementById('t2n').addEventListener('input', updateUI);
-        document.querySelectorAll('.score').forEach(el => {
-            el.addEventListener('keypress', e => { if (!/[0-9]/.test(e.key)) e.preventDefault(); });
-            el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); el.blur(); }});
-        });
         updateUI();
     </script>
 </body>
